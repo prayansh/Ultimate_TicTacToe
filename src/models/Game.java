@@ -10,6 +10,7 @@ public class Game {
     private Board[] boards;
     private Board equivalent; // The board equivalent of the game
     private int contextBoard;
+    private CellVal player;
 
     public Game() {
         boards = new Board[9];
@@ -18,6 +19,7 @@ public class Game {
             boards[i] = new Board();
         }
         contextBoard = -1;
+        player = CellVal.X;
     }
 
     public Board getInContextBoard() {
@@ -41,7 +43,7 @@ public class Game {
      * produce the next context board, if valid move
      * contextboard = -1 if free hit
      */
-    public int playMove(CellVal player, int position) throws InvalidMoveException, GameOverException {
+    public int playMove(int position) throws InvalidMoveException, GameOverException {
         if (boards[contextBoard].solved())
             contextBoard = -1;
         boolean valid = boards[contextBoard].setCellAt(position, player);
@@ -51,7 +53,15 @@ public class Game {
         updateBoards();
         if (checkWinner(player))
             throw new GameOverException("Player " + player.name() + " has won");
+        togglePlayer();
         return contextBoard;
+    }
+
+    private void togglePlayer() {
+        if (player == CellVal.X)
+            player = CellVal.O;
+        else
+            player = CellVal.X;
     }
 
     public boolean checkWinner(CellVal player) {

@@ -28,7 +28,7 @@ public class GameUI {
             System.out.println("Choose index:  ");
             int index = sc.nextInt();
             try {
-                g.playMove(player, index);
+                g.playMove(index);
             } catch (InvalidMoveException e) {
                 System.out.println("Invalid Move!");
                 continue;
@@ -37,10 +37,6 @@ public class GameUI {
                 e.printStackTrace();
                 break;
             }
-            if (player == CellVal.X)
-                player = CellVal.O;
-            else
-                player = CellVal.X;
             System.out.print(printBoards(g));
         } while (!g.checkWinner(player));
     }
